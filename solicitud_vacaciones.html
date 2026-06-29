@@ -108,142 +108,1914 @@
 <div id="quick-replies"></div>
 <div id="input-area">
   <textarea id="txt" rows="1" placeholder="Escribe aquí..." 
-            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();responder()}"></textarea>
-  <button id="send-btn" onclick="responder()">➤</button>
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviar()}"></textarea>
+  <button id="send-btn" onclick="enviar()">➤</button>
 </div>
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────────
 const EMPLEADOS = [
-  {"codigo": "1490", "nombre": "Alan Rafael Mejia Rodriguez", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2025-08-23", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50497415592", "jefe_nombre": "Isis Gabriela Martinez Alvarez", "email_jefe": ""},
-  {"codigo": "1514", "nombre": "Alejandra Michell Aguilar Solano", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Vizcaya", "fi": "2025-12-08", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50494625221", "jefe_nombre": "Nixon Manuel Mendez Galo", "email_jefe": ""},
-  {"codigo": "1085", "nombre": "Alejandro Jose Gomez Morazan", "posicion": "Especialista de IT", "departamento": "Administrativa", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2020-11-16", "anios": 5, "gozados": 9, "pendientes": 68, "totales": 77, "prop": 0, "telefono": "50432076607", "jefe_nombre": "Ramon Enrique Rivas Rodriguez", "email_jefe": ""},
-  {"codigo": "1370", "nombre": "Anderson Yair Mendez Moreno", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Vizcaya", "fi": "2024-06-19", "anios": 2, "gozados": 0, "pendientes": 22, "totales": 22, "prop": 0, "telefono": "50499771963", "jefe_nombre": "Nixon Manuel Mendez Galo", "email_jefe": ""},
-  {"codigo": "1553", "nombre": "Andres Alexander Betancourth Vargas", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2026-03-20", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50433714992", "jefe_nombre": "Luis Adalid Castillo Baca", "email_jefe": ""},
-  {"codigo": "1460", "nombre": "Andres Sebastian Chirino Vigil", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2025-06-04", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50494871842", "jefe_nombre": "Luis Adalid Castillo Baca", "email_jefe": ""},
-  {"codigo": "1465", "nombre": "Angel David Silva Ordoñez", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2025-06-10", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50488230009", "jefe_nombre": "Luis Adalid Castillo Baca", "email_jefe": ""},
-  {"codigo": "1411", "nombre": "Angel Isaac Escaño Ramirez", "posicion": "Supervisor de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2024-11-02", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50496072306", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1516", "nombre": "Angela Michel Melendez Acosta", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2025-12-12", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487887883", "jefe_nombre": "Maria Yanoris Urbina Flores", "email_jefe": ""},
-  {"codigo": "1539", "nombre": "Anthony Yahir Marquina Aguilar", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Vizcaya", "fi": "2026-02-19", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50492016364", "jefe_nombre": "Nixon Manuel Mendez Galo", "email_jefe": ""},
-  {"codigo": "1544", "nombre": "Ariel Fabricio Jimenez Montalvan", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2026-03-07", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50488045001", "jefe_nombre": "Breydi Graciela Montoya Flores", "email_jefe": ""},
-  {"codigo": "1383", "nombre": "Aurora Elizabeth Lainez Rivera", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2024-07-26", "anios": 1, "gozados": 10, "pendientes": 0, "totales": 10, "prop": 0, "telefono": "50431422582", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1512", "nombre": "Bayron Enrique Ramos Ordoñez", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Vizcaya", "fi": "2025-11-26", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489018049", "jefe_nombre": "Nixon Manuel Mendez Galo", "email_jefe": ""},
-  {"codigo": "1074", "nombre": "Breydi Graciela Montoya Flores", "posicion": "Supervisor de Pista", "departamento": "Pista", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2020-09-01", "anios": 5, "gozados": 61, "pendientes": 16, "totales": 77, "prop": 0, "telefono": "50499497300", "jefe_nombre": "Saul Orlando Nieto Lopez", "email_jefe": ""},
-  {"codigo": "1434", "nombre": "Carlos Daniel Molina Fonseca", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2026-04-23", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50498373074", "jefe_nombre": "Maria Yanoris Urbina Flores", "email_jefe": ""},
-  {"codigo": "1068", "nombre": "Carlos Roberto Reyes Maradiaga", "posicion": "Director Ejecutivo", "departamento": "Junta Directiva", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2019-12-31", "anios": 6, "gozados": 0, "pendientes": 97, "totales": 97, "prop": 0, "telefono": "50432928088", "jefe_nombre": "N/A", "email_jefe": ""},
-  {"codigo": "1508", "nombre": "Cecilia Deciree Davila Linares", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2025-11-26", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50497795155", "jefe_nombre": "Isis Gabriela Martinez Alvarez", "email_jefe": ""},
-  {"codigo": "1538", "nombre": "Cesia Danet Valeriano Portillo", "posicion": "Analista de Cuenta", "departamento": "Administrativa", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Puente", "fi": "2026-02-13", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50498685062", "jefe_nombre": "Lizzy Janory Velasquez Romero", "email_jefe": ""},
-  {"codigo": "1487", "nombre": "Cesia Nataly Lopez Rivera", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2025-08-23", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50433798714", "jefe_nombre": "Isis Gabriela Martinez Alvarez", "email_jefe": ""},
-  {"codigo": "1528", "nombre": "Christian Aldair Moran Aguilar", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2026-01-23", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50431966973", "jefe_nombre": "Breydi Graciela Montoya Flores", "email_jefe": ""},
-  {"codigo": "1326", "nombre": "Claudia Pamela Espinal Corrales", "posicion": "Oficial de Credito y Cobranzas", "departamento": "Administrativa", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2024-01-02", "anios": 2, "gozados": 2, "pendientes": 20, "totales": 22, "prop": 0, "telefono": "50495937697", "jefe_nombre": "Lizzy Janory Velasquez Romero", "email_jefe": ""},
-  {"codigo": "1536", "nombre": "Cristhian Yulieth Aguilar Espinoza", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2026-02-10", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50432460637", "jefe_nombre": "Maria Yanoris Urbina Flores", "email_jefe": ""},
-  {"codigo": "1202", "nombre": "Cristian Misael Maradiaga Vasquez", "posicion": "Motorista", "departamento": "Operaciones", "empresa": "Trancosur S. de R.L", "sucursal": "Trancosur", "fi": "2025-07-29", "anios": 0, "gozados": 16, "pendientes": -16, "totales": 0, "prop": 0, "telefono": "50431973767", "jefe_nombre": "Carlos Roberto Reyes Maradiaga", "email_jefe": ""},
-  {"codigo": "1304", "nombre": "Cristina Sarahi Hernandez Torres", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Nacaome", "fi": "2023-10-21", "anios": 2, "gozados": 10, "pendientes": 12, "totales": 22, "prop": 0, "telefono": "50489019187", "jefe_nombre": "Maynor Alexander Lanza Cardenas", "email_jefe": ""},
-  {"codigo": "1570", "nombre": "Cristopher Yahir Baquedano Rios", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2026-05-09", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50433384797", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1524", "nombre": "Dania Lizeth Carrasco Mendez", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2026-01-10", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487337925", "jefe_nombre": "Isis Gabriela Martinez Alvarez", "email_jefe": ""},
-  {"codigo": "1466", "nombre": "Danilo Eduardo Sierra Garcia", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Vizcaya", "fi": "2025-07-01", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50497298439", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1410", "nombre": "Dany Benjamin Ventura Zelaya", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Nacaome", "fi": "2024-10-25", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50431930770", "jefe_nombre": "Maynor Alexander Lanza Cardenas", "email_jefe": ""},
-  {"codigo": "1578", "nombre": "Darling Nohelia Corea Hernandez", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2026-06-12", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50498081973", "jefe_nombre": "Breydi Graciela Montoya Flores", "email_jefe": ""},
-  {"codigo": "1320", "nombre": "Delmer Fabricio Baca Garcia", "posicion": "Supervisor de Transporte", "departamento": "Administrativa", "empresa": "Trancosur S. de R.L", "sucursal": "Trancosur", "fi": "2025-05-22", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50432729998", "jefe_nombre": "Emilio Arturo Baires Aguiluz", "email_jefe": ""},
-  {"codigo": "1568", "nombre": "Digna Jarixa Gutierrez", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2026-04-27", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487467201", "jefe_nombre": "Maria Yanoris Urbina Flores", "email_jefe": ""},
-  {"codigo": "1215", "nombre": "Dixa Oneira Alvarez Ramos", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2022-09-24", "anios": 3, "gozados": 22, "pendientes": 15, "totales": 37, "prop": 0, "telefono": "50432745655", "jefe_nombre": "Breydi Graciela Montoya Flores", "email_jefe": ""},
-  {"codigo": "1563", "nombre": "Duglas Otoniel Herrera Portillo", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2026-04-11", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489787056", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1520", "nombre": "Dulce Gabriela Nuñez Oviedo", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2026-01-10", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50433636906", "jefe_nombre": "Isis Gabriela Martinez Alvarez", "email_jefe": ""},
-  {"codigo": "1157", "nombre": "Dunia Damari Lopez Moreno", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2022-01-01", "anios": 4, "gozados": 22, "pendientes": 35, "totales": 57, "prop": 0, "telefono": "50488452360", "jefe_nombre": "Luis Adalid Castillo Baca", "email_jefe": ""},
-  {"codigo": "1001", "nombre": "Eddy Leonardo Alvarez Perez", "posicion": "Supervisor de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2018-02-18", "anios": 8, "gozados": 117, "pendientes": 20, "totales": 137, "prop": 0, "telefono": "50432309897", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1446", "nombre": "Edgar Omar Pineda Cruz", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2025-03-05", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50493527611", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1063", "nombre": "Edwin Alexis Guillen Perez", "posicion": "Director Ejecutivo", "departamento": "Junta Directiva", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2017-11-03", "anios": 8, "gozados": 0, "pendientes": 137, "totales": 137, "prop": 0, "telefono": "50495292929", "jefe_nombre": "N/A", "email_jefe": ""},
-  {"codigo": "1580", "nombre": "Edwin Josue Izaguirre Baquedano", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2026-06-12", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50432905510", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1476", "nombre": "Eldeen Ivan Funes Funez", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2025-07-08", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489615433", "jefe_nombre": "Luis Adalid Castillo Baca", "email_jefe": ""},
-  {"codigo": "1486", "nombre": "Elquin Aldair Perez Hernandez", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Vizcaya", "fi": "2025-08-23", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50495796847", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1367", "nombre": "Emilio Arturo Baires Aguiluz", "posicion": "Jefe de Administración Inmobiliaria", "departamento": "Administrativa", "empresa": "Estación El Puente S. de R.L", "sucursal": "Inmobiliaria", "fi": "2024-06-01", "anios": 2, "gozados": 1, "pendientes": 21, "totales": 22, "prop": 0, "telefono": "50498797655", "jefe_nombre": "Ramon Enrique Rivas Rodriguez", "email_jefe": ""},
-  {"codigo": "1447", "nombre": "Erick Fernando Aguilar Ortiz", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2025-03-25", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50497889710", "jefe_nombre": "Breydi Graciela Montoya Flores", "email_jefe": ""},
-  {"codigo": "1546", "nombre": "Erick Geovany Galo Portillo", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2026-03-07", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487888700", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1573", "nombre": "Esperanza Abigail Baquedano Osorto", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2026-05-11", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50495079611", "jefe_nombre": "Luis Adalid Castillo Baca", "email_jefe": ""},
-  {"codigo": "1569", "nombre": "Esther Alejandra Flores Velasquez", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Vizcaya", "fi": "2026-04-27", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50496173595", "jefe_nombre": "Nixon Manuel Mendez Galo", "email_jefe": ""},
-  {"codigo": "1551", "nombre": "Evelin Mercedes Lopez Tercero", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2026-03-20", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "5048876501", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1565", "nombre": "Faucy Felicito Ochoa Aguilar", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2026-04-25", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50494506709", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1564", "nombre": "Francisco Alcides Maradiaga Beltran", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2026-04-11", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50433160913", "jefe_nombre": "Maria Yanoris Urbina Flores", "email_jefe": ""},
-  {"codigo": "1457", "nombre": "Gabriela Aracely Benavides Sauceda", "posicion": "Analista de Talento Humano", "departamento": "Administrativa", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2025-05-15", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50433610309", "jefe_nombre": "Marcela Regina Quezada Escobar", "email_jefe": ""},
-  {"codigo": "1009", "nombre": "Glenda Lizet Valladares Galo", "posicion": "Tesorera", "departamento": "Administrativa", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2017-11-08", "anios": 8, "gozados": 111, "pendientes": 26, "totales": 137, "prop": 0, "telefono": "50433958961", "jefe_nombre": "Lizzy Janory Velasquez Romero", "email_jefe": ""},
-  {"codigo": "1537", "nombre": "Gustavo Eduardo Flores Hernandez", "posicion": "Jefe de Operaciones FRESSCO", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2026-02-10", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50499379756", "jefe_nombre": "Maria Yanoris Urbina Flores", "email_jefe": ""},
-  {"codigo": "1478", "nombre": "Hanssy Yamilett Ramos Barahona", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2025-07-18", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50488933821", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1426", "nombre": "Indira Alejandra Velis Cruz", "posicion": "Especialista de Compras", "departamento": "Administrativa", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2024-12-16", "anios": 1, "gozados": 2, "pendientes": 8, "totales": 10, "prop": 0, "telefono": "50494405646", "jefe_nombre": "Ramon Enrique Rivas Rodriguez", "email_jefe": ""},
-  {"codigo": "1205", "nombre": "Iris Isabel Rodriguez", "posicion": "Auxiliar de Limpieza", "departamento": "Limpieza", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2022-08-19", "anios": 3, "gozados": 22, "pendientes": 15, "totales": 37, "prop": 0, "telefono": "50432397508", "jefe_nombre": "Marcela Regina Quezada Escobar", "email_jefe": ""},
-  {"codigo": "1556", "nombre": "Isaac Emanuel Mondragon Maradiaga", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2026-03-21", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50495356739", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1579", "nombre": "Isis Gabriela Martinez Alvarez", "posicion": "Supervisor de Tienda FRESSCO", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2026-06-12", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50496540469", "jefe_nombre": "Gustavo Eduardo Flores Hernandez", "email_jefe": ""},
-  {"codigo": "1435", "nombre": "Ismelda Lined Cruz Suazo", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Nacaome", "fi": "2025-05-15", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50431828462", "jefe_nombre": "Maynor Alexander Lanza Cardenas", "email_jefe": ""},
-  {"codigo": "1501", "nombre": "Jarvin Missael Amador Reina", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Portosur", "fi": "2025-10-06", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50498309549", "jefe_nombre": "Victor Hugo Auceda Castro", "email_jefe": ""},
-  {"codigo": "1561", "nombre": "Javier David Vega Pereira", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Nacaome", "fi": "2026-03-31", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489374565", "jefe_nombre": "Maynor Alexander Lanza Cardenas", "email_jefe": ""},
-  {"codigo": "1576", "nombre": "Jennifer Maryery Castro Carranza", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Portosur", "fi": "2026-06-06", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487360321", "jefe_nombre": "Victor Hugo Auceda Castro", "email_jefe": ""},
-  {"codigo": "1534", "nombre": "Jessica Carolina Villatoro Hernandez", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2026-01-29", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487996879", "jefe_nombre": "Breydi Graciela Montoya Flores", "email_jefe": ""},
-  {"codigo": "1359", "nombre": "Jimmy Alejandro Sanchez Mercado", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2024-05-02", "anios": 2, "gozados": 10, "pendientes": 12, "totales": 22, "prop": 0, "telefono": "50488427603", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1462", "nombre": "Joel Javier Ortiz Vasquez", "posicion": "Operador de Cabezal", "departamento": "Operaciones", "empresa": "Trancosur S. de R.L", "sucursal": "Trancosur", "fi": "2026-02-01", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50432493387", "jefe_nombre": "Emilio Arturo Baires Aguiluz", "email_jefe": ""},
-  {"codigo": "1519", "nombre": "Jorge Armando Maldonado Bonilla", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2026-01-10", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489443007", "jefe_nombre": "Isis Gabriela Martinez Alvarez", "email_jefe": ""},
-  {"codigo": "1151", "nombre": "Jose Adonay Munguia Maldonado", "posicion": "Operario Lider", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2022-01-01", "anios": 4, "gozados": 25, "pendientes": 32, "totales": 57, "prop": 0, "telefono": "50433806302", "jefe_nombre": "Luis Adalid Castillo Baca", "email_jefe": ""},
-  {"codigo": "1567", "nombre": "Jose Daniel Matamoros Espinoza", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2026-04-27", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489493454", "jefe_nombre": "Isis Gabriela Martinez Alvarez", "email_jefe": ""},
-  {"codigo": "1577", "nombre": "Jose Francisco Lagos Velasquez", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Nacaome", "fi": "2026-06-08", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487430148", "jefe_nombre": "Maynor Alexander Lanza Cardenas", "email_jefe": ""},
-  {"codigo": "1535", "nombre": "Jose Rolando Palacios Manzanarez", "posicion": "Operador de Cabezal", "departamento": "Operaciones", "empresa": "Trancosur S. de R.L", "sucursal": "Trancosur", "fi": "2026-02-06", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50488542973", "jefe_nombre": "Emilio Arturo Baires Aguiluz", "email_jefe": ""},
-  {"codigo": "1522", "nombre": "Josselin Vanessa Estrada Martinez", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Portosur", "fi": "2026-01-10", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50497636278", "jefe_nombre": "Victor Hugo Auceda Castro", "email_jefe": ""},
-  {"codigo": "1017", "nombre": "Karla Cecilia Reyes Fonseca", "posicion": "Analista de Cuenta", "departamento": "Administrativa", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2019-09-16", "anios": 6, "gozados": 72, "pendientes": 25, "totales": 97, "prop": 0, "telefono": "50432739446", "jefe_nombre": "Lizzy Janory Velasquez Romero", "email_jefe": ""},
-  {"codigo": "1060", "nombre": "Karla Yaneth Gomez Perez", "posicion": "Director Ejecutivo", "departamento": "Junta Directiva", "empresa": "Estación El Puente S. de R.L", "sucursal": "Inmobiliaria", "fi": "2018-09-04", "anios": 7, "gozados": 0, "pendientes": 117, "totales": 117, "prop": 0, "telefono": "50433361780", "jefe_nombre": "N/A", "email_jefe": ""},
-  {"codigo": "1540", "nombre": "Katherine Grissel Oseguera Canales", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Portosur", "fi": "2026-02-19", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50433981120", "jefe_nombre": "Victor Hugo Auceda Castro", "email_jefe": ""},
-  {"codigo": "1497", "nombre": "Keren Nicol Aguilera Velasquez", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2025-09-11", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487337927", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1343", "nombre": "Keylin Michelle Canales Ochoa", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2024-02-16", "anios": 2, "gozados": 10, "pendientes": 12, "totales": 22, "prop": 0, "telefono": "50487398307", "jefe_nombre": "Breydi Graciela Montoya Flores", "email_jefe": ""},
-  {"codigo": "1533", "nombre": "Keylin Tatiana Salinas Rodriguez", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Vizcaya", "fi": "2026-01-29", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50432010332", "jefe_nombre": "Nixon Manuel Mendez Galo", "email_jefe": ""},
-  {"codigo": "1251", "nombre": "Leadys Yulieth Maldonado Flores", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2023-03-29", "anios": 3, "gozados": 22, "pendientes": 15, "totales": 37, "prop": 0, "telefono": "50487568727", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1247", "nombre": "Lesbia Waleska Galo Hernandez", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2023-03-16", "anios": 3, "gozados": 22, "pendientes": 15, "totales": 37, "prop": 0, "telefono": "50431771197", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1342", "nombre": "Liliana Marcela Ramirez Andino", "posicion": "Operador Lider", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2024-02-20", "anios": 2, "gozados": 10, "pendientes": 12, "totales": 22, "prop": 0, "telefono": "50494868104", "jefe_nombre": "Isis Gabriela Martinez Alvarez", "email_jefe": ""},
-  {"codigo": "1070", "nombre": "Lizzy Janory Velasquez Romero", "posicion": "Coordinador Financiero Interino", "departamento": "Administrativa", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2026-04-27", "anios": 0, "gozados": 72, "pendientes": -72, "totales": 0, "prop": 0, "telefono": "50432764733", "jefe_nombre": "Ramon Enrique Rivas Rodriguez", "email_jefe": ""},
-  {"codigo": "1198", "nombre": "Luis Adalid Castillo Baca", "posicion": "Supervisor de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2022-07-19", "anios": 3, "gozados": 37, "pendientes": 0, "totales": 37, "prop": 0, "telefono": "50487770887", "jefe_nombre": "Luis Adalid Castillo Baca", "email_jefe": ""},
-  {"codigo": "1560", "nombre": "Luis Alberto Lainez Posadas", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2026-03-31", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487395841", "jefe_nombre": "Maria Yanoris Urbina Flores", "email_jefe": ""},
-  {"codigo": "1397", "nombre": "Luis Armando Rodriguez Centeno", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Vizcaya", "fi": "2024-08-20", "anios": 1, "gozados": 6, "pendientes": 4, "totales": 10, "prop": 0, "telefono": "50488493632", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1044", "nombre": "Luis Fernando Ordoñez Nuñez", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2018-11-25", "anios": 7, "gozados": 86, "pendientes": 31, "totales": 117, "prop": 0, "telefono": "50489057628", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1532", "nombre": "Manuel Antonio Valladares Gomez", "posicion": "Operador de Cabezal", "departamento": "Operaciones", "empresa": "Trancosur S. de R.L", "sucursal": "Trancosur", "fi": "2026-01-28", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50498557184", "jefe_nombre": "Emilio Arturo Baires Aguiluz", "email_jefe": ""},
-  {"codigo": "1348", "nombre": "Manuel Mendez Gomez", "posicion": "Operador de Cabezal", "departamento": "Operaciones", "empresa": "Trancosur S. de R.L", "sucursal": "Trancosur", "fi": "2026-02-01", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50496372070", "jefe_nombre": "Emilio Arturo Baires Aguiluz", "email_jefe": ""},
-  {"codigo": "1353", "nombre": "Marcela Regina Quezada Escobar", "posicion": "Jefe de Talento Humano", "departamento": "Administrativa", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2024-04-01", "anios": 2, "gozados": 8, "pendientes": 14, "totales": 22, "prop": 0, "telefono": "50431731408", "jefe_nombre": "Ramon Enrique Rivas Rodriguez", "email_jefe": ""},
-  {"codigo": "1477", "nombre": "Marcos Joel Osorio Avila", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2025-07-18", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489569991", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1504", "nombre": "Maria Agustina Aguilera Aguilera", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2025-10-30", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50488363357", "jefe_nombre": "Isis Gabriela Martinez Alvarez", "email_jefe": ""},
-  {"codigo": "1427", "nombre": "Maria Fernanda Duarte Espinal", "posicion": "Auditor Interno Junior", "departamento": "Administrativa", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2024-12-16", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50431575743", "jefe_nombre": "Ramon Enrique Rivas Rodriguez", "email_jefe": ""},
-  {"codigo": "1249", "nombre": "Maria Yanoris Urbina Flores", "posicion": "Supervisor de Tienda FRESSCO", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2023-03-16", "anios": 3, "gozados": 1, "pendientes": 36, "totales": 37, "prop": 0, "telefono": "50499457491", "jefe_nombre": "Gustavo Eduardo Flores Hernandez", "email_jefe": ""},
-  {"codigo": "1378", "nombre": "Maynor Alexander Lanza Cardenas", "posicion": "Supervisor de Tienda FRESSCO", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Nacaome", "fi": "2024-07-09", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50492021094", "jefe_nombre": "Gustavo Eduardo Flores Hernandez", "email_jefe": ""},
-  {"codigo": "1499", "nombre": "Melkis Sedeth Flores Pastor", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2026-05-06", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50488254141", "jefe_nombre": "Breydi Graciela Montoya Flores", "email_jefe": ""},
-  {"codigo": "1267", "nombre": "Merily Janeth Villanueva Castillo", "posicion": "Especialista de Marketing", "departamento": "Administrativa", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2023-06-15", "anios": 3, "gozados": 22, "pendientes": 15, "totales": 37, "prop": 0, "telefono": "50432732499", "jefe_nombre": "Ramon Enrique Rivas Rodriguez", "email_jefe": ""},
-  {"codigo": "1394", "nombre": "Merlo Zabdi Amador Colindres", "posicion": "Motorista", "departamento": "Operaciones", "empresa": "Trancosur S. de R.L", "sucursal": "Trancosur", "fi": "2024-08-01", "anios": 1, "gozados": 1, "pendientes": 9, "totales": 10, "prop": 0, "telefono": "50431459603", "jefe_nombre": "Edwin Alexis Guillen Perez", "email_jefe": ""},
-  {"codigo": "1433", "nombre": "Michel Alejandra Almendarez Morales", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2025-01-10", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50499174197", "jefe_nombre": "Luis Adalid Castillo Baca", "email_jefe": ""},
-  {"codigo": "1062", "nombre": "Michelle Alejandra Corrales Montes", "posicion": "Director Ejecutivo", "departamento": "Junta Directiva", "empresa": "Estación El Puente S. de R.L", "sucursal": "Inmobiliaria", "fi": "2019-06-06", "anios": 7, "gozados": 0, "pendientes": 117, "totales": 117, "prop": 0, "telefono": "50499738972", "jefe_nombre": "N/A", "email_jefe": ""},
-  {"codigo": "1511", "nombre": "Nahomy Suzet Cabrera Escalante", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2025-11-26", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489400082", "jefe_nombre": "Maria Yanoris Urbina Flores", "email_jefe": ""},
-  {"codigo": "1454", "nombre": "Nestor Eduardo Ortez Calderon", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2025-04-26", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50499429528", "jefe_nombre": "Breydi Graciela Montoya Flores", "email_jefe": ""},
-  {"codigo": "1444", "nombre": "Nixon Manuel Mendez Galo", "posicion": "Supervisor de Tienda FRESSCO", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Vizcaya", "fi": "2025-03-05", "anios": 1, "gozados": 2, "pendientes": 8, "totales": 10, "prop": 0, "telefono": "50489629103", "jefe_nombre": "Gustavo Eduardo Flores Hernandez", "email_jefe": ""},
-  {"codigo": "1386", "nombre": "Olbin Leonel Estrada Gonzales", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Vizcaya", "fi": "2024-08-05", "anios": 1, "gozados": 6, "pendientes": 4, "totales": 10, "prop": 0, "telefono": "50497602578", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1436", "nombre": "Osgler Ismael Perez Perez", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Vizcaya", "fi": "2025-02-06", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50498217598", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1216", "nombre": "Osiris Xiomara Avila Garcia", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2022-10-13", "anios": 3, "gozados": 22, "pendientes": 15, "totales": 37, "prop": 0, "telefono": "50488577599", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1548", "nombre": "Paola Desiret Solorzano Sorto", "posicion": "Analista de cuenta", "departamento": "Administrativa", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2026-03-11", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489810726", "jefe_nombre": "Lizzy Janory Velasquez Romero", "email_jefe": ""},
-  {"codigo": "1531", "nombre": "Paola Yasmin Lainez Cruz", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Nacaome", "fi": "2026-01-23", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50488477861", "jefe_nombre": "Maynor Alexander Lanza Cardenas", "email_jefe": ""},
-  {"codigo": "1566", "nombre": "Pedro Armando Carrasco", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2026-04-25", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50496055432", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1052", "nombre": "Ramon Enrique Rivas Rodriguez", "posicion": "Gerente General", "departamento": "Gerencia", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2019-12-20", "anios": 6, "gozados": 50, "pendientes": 47, "totales": 97, "prop": 0, "telefono": "50496729446", "jefe_nombre": "Edwin Alexis Guillen Perez", "email_jefe": ""},
-  {"codigo": "1483", "nombre": "Rigoberto Aguilera Casco", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Vizcaya", "fi": "2025-08-05", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487636648", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1492", "nombre": "Ronald Ivan Flores Baquedano", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2025-08-28", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489301752", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1575", "nombre": "Rony Alfredo Avila Maradiaga", "posicion": "Conseje", "departamento": "Administrativa", "empresa": "Fressco S de R.L", "sucursal": "Miramonte", "fi": "2026-05-25", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489457820", "jefe_nombre": "Indira Alejandra Velis Cruz", "email_jefe": ""},
-  {"codigo": "1263", "nombre": "Rosmery Evely Aguilera Quiroz", "posicion": "Jefe de Operaciones Choluteca", "departamento": "Administrativa", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2023-06-05", "anios": 3, "gozados": 19, "pendientes": 18, "totales": 37, "prop": 0, "telefono": "50432948270", "jefe_nombre": "Ramon Enrique Rivas Rodriguez", "email_jefe": ""},
-  {"codigo": "1088", "nombre": "Saul Orlando Nieto Lopez", "posicion": "Jefe de Operaciones Valle", "departamento": "Administrativa", "empresa": "Portosur S de R.L", "sucursal": "Portosur", "fi": "2020-11-17", "anios": 5, "gozados": 15, "pendientes": 62, "totales": 77, "prop": 0, "telefono": "50489036657", "jefe_nombre": "Ramon Enrique Rivas Rodriguez", "email_jefe": ""},
-  {"codigo": "1480", "nombre": "Sirli Marisol Nuñez Escoto", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2025-08-05", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50487881343", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1234", "nombre": "Ulices Rigoberto Zelaya Ramirez", "posicion": "Auditor Interno", "departamento": "Administrativa", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2023-01-16", "anios": 3, "gozados": 7, "pendientes": 30, "totales": 37, "prop": 0, "telefono": "50432599478", "jefe_nombre": "Ramon Enrique Rivas Rodriguez", "email_jefe": ""},
-  {"codigo": "1562", "nombre": "Victor Hugo Auceda Castro", "posicion": "Supervisor de Tienda FRESSCO", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Portosur", "fi": "2026-04-10", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50492837692", "jefe_nombre": "Gustavo Eduardo Flores Hernandez", "email_jefe": ""},
-  {"codigo": "1366", "nombre": "Victoria Emiliany Quiroz Gonzales", "posicion": "Supervisor de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Vizcaya", "fi": "2024-05-24", "anios": 2, "gozados": 0, "pendientes": 22, "totales": 22, "prop": 0, "telefono": "50487643863", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1572", "nombre": "Yahaira Yesenia Flores Santos", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Nacaome", "fi": "2026-05-11", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50432906129", "jefe_nombre": "Luis Adalid Castillo Baca", "email_jefe": ""},
-  {"codigo": "1507", "nombre": "Yajaira Maribel Silva Garcia", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Nacaome", "fi": "2025-11-26", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50433663510", "jefe_nombre": "Maynor Alexander Lanza Cardenas", "email_jefe": ""},
-  {"codigo": "1525", "nombre": "Yelsi Yair Viera Giron", "posicion": "Analista de Cuenta", "departamento": "Administrativa", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2026-01-22", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489622366", "jefe_nombre": "Lizzy Janory Velasquez Romero", "email_jefe": ""},
-  {"codigo": "1574", "nombre": "Yerlin Grecibel Estrada Funez", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Portosur", "fi": "2026-05-11", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50433722139", "jefe_nombre": "Victor Hugo Auceda Castro", "email_jefe": ""},
-  {"codigo": "1505", "nombre": "Yesmy Adali Osorto Aguilar", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Nacaome", "fi": "2025-10-30", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50494529965", "jefe_nombre": "Maynor Alexander Lanza Cardenas", "email_jefe": ""},
-  {"codigo": "1407", "nombre": "Yesmy Yaxeli Betanco Aguirre", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Puente", "fi": "2024-10-23", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50432068441", "jefe_nombre": "Maria Yanoris Urbina Flores", "email_jefe": ""},
-  {"codigo": "1390", "nombre": "Yolani Marisol Munguia Mendez", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Vizcaya", "fi": "2024-08-05", "anios": 1, "gozados": 6, "pendientes": 4, "totales": 10, "prop": 0, "telefono": "50492881651", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1453", "nombre": "Yorlenis Rosibel Gomez Avila", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación El Puente S. de R.L", "sucursal": "Puente", "fi": "2025-04-23", "anios": 1, "gozados": 0, "pendientes": 10, "totales": 10, "prop": 0, "telefono": "50433120897", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1325", "nombre": "Yusmary Maritza Rodriguez Espinal", "posicion": "Operario de Pista", "departamento": "Pista", "empresa": "Estación Miramonte S. de R.L de C.V", "sucursal": "Miramonte", "fi": "2023-12-28", "anios": 2, "gozados": 5, "pendientes": 17, "totales": 22, "prop": 0, "telefono": "50488273487", "jefe_nombre": "Rosmery Evely Aguilera Quiroz", "email_jefe": ""},
-  {"codigo": "1471", "nombre": "Zaira Judith Avila Valle", "posicion": "Operario de Tienda", "departamento": "Tienda", "empresa": "Fressco S de R.L", "sucursal": "Portosur", "fi": "2025-07-01", "anios": 0, "gozados": 0, "pendientes": 0, "totales": 0, "prop": 0, "telefono": "50489124575", "jefe_nombre": "Victor Hugo Auceda Castro", "email_jefe": ""},
+  {
+    "codigo": "1009",
+    "nombre": "Glenda Lizet Valladares Galo",
+    "posicion": "Analista de Cuentas",
+    "departamento": "Administración",
+    "empresa": "ESTACION EL PUENTE S. DE R.L",
+    "fi": "2017-11-08",
+    "anios": 8,
+    "gozados": 26,
+    "pendientes": 123.5,
+    "totales": 137,
+    "prop": 12.5
+  },
+  {
+    "codigo": "1001",
+    "nombre": "Eddy Leonardo Alvarez Perez",
+    "posicion": "Supervisor",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE S. DE R.L",
+    "fi": "2018-02-18",
+    "anios": 8,
+    "gozados": 20,
+    "pendientes": 123.9,
+    "totales": 137,
+    "prop": 6.94
+  },
+  {
+    "codigo": "1044",
+    "nombre": "Luis Fernando Ordoñez Nuñez",
+    "posicion": "Operador",
+    "departamento": "Pista",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2018-11-25",
+    "anios": 7,
+    "gozados": 31,
+    "pendientes": 97.6,
+    "totales": 117,
+    "prop": 11.61
+  },
+  {
+    "codigo": "1017",
+    "nombre": "Karla Cecilia Reyes Fonseca",
+    "posicion": "Analista de Cuentas",
+    "departamento": "Administración",
+    "empresa": "FRESSCO",
+    "fi": "2019-09-16",
+    "anios": 6,
+    "gozados": 25,
+    "pendientes": 87.4,
+    "totales": 97,
+    "prop": 15.39
+  },
+  {
+    "codigo": "1052",
+    "nombre": "Ramon Enrique Rivas Rodriguez",
+    "posicion": "Gerente General",
+    "departamento": "Administración",
+    "empresa": "PORTOSUR",
+    "fi": "2019-12-20",
+    "anios": 6,
+    "gozados": 47,
+    "pendientes": 60.2,
+    "totales": 97,
+    "prop": 10.17
+  },
+  {
+    "codigo": "1051",
+    "nombre": "Nahun Alfredo Baca Garcia",
+    "posicion": "Jefe de Estrategia y Productividad",
+    "departamento": "Estrategia",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2020-01-12",
+    "anios": 6,
+    "gozados": 0,
+    "pendientes": 105.9,
+    "totales": 97,
+    "prop": 8.94
+  },
+  {
+    "codigo": "1070",
+    "nombre": "Lizzy Janory Velasquez Romero",
+    "posicion": "Auxiliar Contable",
+    "departamento": "Administración",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2020-04-27",
+    "anios": 6,
+    "gozados": 25,
+    "pendientes": 75.2,
+    "totales": 97,
+    "prop": 3.17
+  },
+  {
+    "codigo": "1074",
+    "nombre": "Breydi Graciela Montoya Flores",
+    "posicion": "Operador",
+    "departamento": "Pista",
+    "empresa": "PORTOSUR",
+    "fi": "2020-09-01",
+    "anios": 5,
+    "gozados": 16,
+    "pendientes": 77.2,
+    "totales": 77,
+    "prop": 16.22
+  },
+  {
+    "codigo": "1085",
+    "nombre": "Alejandro Jose Gomez Morazan",
+    "posicion": "Especialista de IT",
+    "departamento": "Administración",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2020-11-16",
+    "anios": 5,
+    "gozados": 68,
+    "pendientes": 21.1,
+    "totales": 77,
+    "prop": 12.06
+  },
+  {
+    "codigo": "1088",
+    "nombre": "Saul Orlando Nieto Lopez",
+    "posicion": "Operador Lider",
+    "departamento": "Administración",
+    "empresa": "PORTOSUR",
+    "fi": "2020-11-17",
+    "anios": 5,
+    "gozados": 62,
+    "pendientes": 27.0,
+    "totales": 77,
+    "prop": 12.0
+  },
+  {
+    "codigo": "1135",
+    "nombre": "Melvin Rene Portillo Nibarrez",
+    "posicion": "Jefe de Admon. Financiera",
+    "departamento": "Administración",
+    "empresa": "PORTOSUR",
+    "fi": "2021-10-16",
+    "anios": 4,
+    "gozados": 32,
+    "pendientes": 38.7,
+    "totales": 57,
+    "prop": 13.72
+  },
+  {
+    "codigo": "1158",
+    "nombre": "Katherine Lilibeth Maldonado Mesa",
+    "posicion": "Supervisor Barista",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2022-01-01",
+    "anios": 4,
+    "gozados": 20,
+    "pendientes": 46.6,
+    "totales": 57,
+    "prop": 9.56
+  },
+  {
+    "codigo": "1151",
+    "nombre": "Jose Adonay Munguia Maldonado",
+    "posicion": "Operador de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2022-07-02",
+    "anios": 3,
+    "gozados": 12,
+    "pendientes": 44.5,
+    "totales": 37,
+    "prop": 19.5
+  },
+  {
+    "codigo": "1157",
+    "nombre": "Dunia Damary Lopez Moreno",
+    "posicion": "Operador de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2022-07-02",
+    "anios": 3,
+    "gozados": 15,
+    "pendientes": 41.5,
+    "totales": 37,
+    "prop": 19.5
+  },
+  {
+    "codigo": "1198",
+    "nombre": "Luis Adalid Castillo Baca",
+    "posicion": "Operador Líder de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2022-07-19",
+    "anios": 3,
+    "gozados": 0,
+    "pendientes": 55.6,
+    "totales": 37,
+    "prop": 18.56
+  },
+  {
+    "codigo": "1202",
+    "nombre": "Cristian Misael Maradiaga Vasquez",
+    "posicion": "Supervisor de Transporte",
+    "departamento": "TRANCOSUR",
+    "empresa": "TRANCOSUR",
+    "fi": "2022-07-29",
+    "anios": 3,
+    "gozados": 0,
+    "pendientes": 55.1,
+    "totales": 37,
+    "prop": 18.06
+  },
+  {
+    "codigo": "1205",
+    "nombre": "Iris Isabel Rodriguez",
+    "posicion": "Limpieza",
+    "departamento": "Administración",
+    "empresa": "PORTOSUR",
+    "fi": "2022-08-19",
+    "anios": 3,
+    "gozados": 15,
+    "pendientes": 38.9,
+    "totales": 37,
+    "prop": 16.89
+  },
+  {
+    "codigo": "1215",
+    "nombre": "Dixa Oneira Alvarez Ramos",
+    "posicion": "Operador de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2022-09-24",
+    "anios": 3,
+    "gozados": 15,
+    "pendientes": 37.0,
+    "totales": 37,
+    "prop": 15.0
+  },
+  {
+    "codigo": "1216",
+    "nombre": "Osiris Xiomara Avila Garcia",
+    "posicion": "Operador de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2022-10-13",
+    "anios": 3,
+    "gozados": 15,
+    "pendientes": 35.9,
+    "totales": 37,
+    "prop": 13.89
+  },
+  {
+    "codigo": "1221",
+    "nombre": "Erick Fernando Aguilar Ortiz",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "PORTOSUR",
+    "fi": "2025-03-25",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 3.0,
+    "totales": 10,
+    "prop": 2.97
+  },
+  {
+    "codigo": "1229",
+    "nombre": "Samir Yanin Garcia Rivera",
+    "posicion": "Operario Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2023-03-01",
+    "anios": 3,
+    "gozados": 0,
+    "pendientes": 43.2,
+    "totales": 37,
+    "prop": 6.22
+  },
+  {
+    "codigo": "1224",
+    "nombre": "Heber Ariel Nuñez Cruz",
+    "posicion": "Operario Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2023-01-08",
+    "anios": 3,
+    "gozados": 15,
+    "pendientes": 31.2,
+    "totales": 37,
+    "prop": 9.17
+  },
+  {
+    "codigo": "1234",
+    "nombre": "Ulices Rigoberto Zelaya Ramirez",
+    "posicion": "Auditor Interno",
+    "departamento": "Administración",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2023-01-16",
+    "anios": 3,
+    "gozados": 30,
+    "pendientes": 15.7,
+    "totales": 37,
+    "prop": 8.72
+  },
+  {
+    "codigo": "1249",
+    "nombre": "Maria Yanoris Urbina Flores",
+    "posicion": "Supervisor de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2023-03-16",
+    "anios": 3,
+    "gozados": 36,
+    "pendientes": 6.4,
+    "totales": 37,
+    "prop": 5.39
+  },
+  {
+    "codigo": "1218",
+    "nombre": "Elkin Leonel Mercado Ordoñez",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2023-05-03",
+    "anios": 3,
+    "gozados": 27,
+    "pendientes": 12.8,
+    "totales": 37,
+    "prop": 2.78
+  },
+  {
+    "codigo": "1257",
+    "nombre": "Waleska Nohely Rivera Corrales",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2023-05-04",
+    "anios": 3,
+    "gozados": 27,
+    "pendientes": 12.7,
+    "totales": 37,
+    "prop": 2.72
+  },
+  {
+    "codigo": "1288",
+    "nombre": "Sofia Lizeth Carranza Figueroa",
+    "posicion": "Operario Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2023-05-04",
+    "anios": 3,
+    "gozados": 15,
+    "pendientes": 24.7,
+    "totales": 37,
+    "prop": 2.72
+  },
+  {
+    "codigo": "1230",
+    "nombre": "Jeason Ramón Perez Hernandez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2023-05-06",
+    "anios": 3,
+    "gozados": 15,
+    "pendientes": 24.6,
+    "totales": 37,
+    "prop": 2.61
+  },
+  {
+    "codigo": "1260",
+    "nombre": "Carlos Ibrahan Posadas Pacheco",
+    "posicion": "Operario Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2023-05-10",
+    "anios": 3,
+    "gozados": 15,
+    "pendientes": 24.4,
+    "totales": 37,
+    "prop": 2.39
+  },
+  {
+    "codigo": "1263",
+    "nombre": "Rosmery Evely Aguilera Quiroz",
+    "posicion": "Jefe de Operaciones Choluteca",
+    "departamento": "Administración",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2023-06-05",
+    "anios": 3,
+    "gozados": 18,
+    "pendientes": 20.0,
+    "totales": 37,
+    "prop": 1.0
+  },
+  {
+    "codigo": "1266",
+    "nombre": "Cristian Mauricio Nuñez Montes",
+    "posicion": "Supervisor Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2023-06-14",
+    "anios": 3,
+    "gozados": 0,
+    "pendientes": 37.5,
+    "totales": 37,
+    "prop": 0.5
+  },
+  {
+    "codigo": "1267",
+    "nombre": "Merily Janeth Villanueva Castillo",
+    "posicion": "Jefe de Marketing",
+    "departamento": "Administración",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2023-06-15",
+    "anios": 3,
+    "gozados": 15,
+    "pendientes": 22.4,
+    "totales": 37,
+    "prop": 0.44
+  },
+  {
+    "codigo": "1272",
+    "nombre": "Escarleth Yanini Villalobos Umanzor",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2023-07-13",
+    "anios": 2,
+    "gozados": 12,
+    "pendientes": 24.2,
+    "totales": 22,
+    "prop": 14.17
+  },
+  {
+    "codigo": "1247",
+    "nombre": "Lesbia Waleska Galo Hernandez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE S. DE R.L",
+    "fi": "2023-07-18",
+    "anios": 2,
+    "gozados": 0,
+    "pendientes": 36.0,
+    "totales": 22,
+    "prop": 13.96
+  },
+  {
+    "codigo": "1278",
+    "nombre": "Paola Lizeth Moran Montoya",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2023-07-24",
+    "anios": 2,
+    "gozados": 22,
+    "pendientes": 13.8,
+    "totales": 22,
+    "prop": 13.75
+  },
+  {
+    "codigo": "1251",
+    "nombre": "Leadys Yulieth Maldonado Flores",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE S. DE R.L",
+    "fi": "2023-07-31",
+    "anios": 2,
+    "gozados": 0,
+    "pendientes": 35.5,
+    "totales": 22,
+    "prop": 13.46
+  },
+  {
+    "codigo": "1292",
+    "nombre": "Ciro Conradino Ordoñez Sosa",
+    "posicion": "Motorista",
+    "departamento": "Operaciones",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2023-08-18",
+    "anios": 2,
+    "gozados": 0,
+    "pendientes": 34.7,
+    "totales": 22,
+    "prop": 12.71
+  },
+  {
+    "codigo": "1284",
+    "nombre": "Eugenia Isabel Contreras Hernández",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2023-10-13",
+    "anios": 2,
+    "gozados": 0,
+    "pendientes": 32.4,
+    "totales": 22,
+    "prop": 10.42
+  },
+  {
+    "codigo": "1306",
+    "nombre": "Cindy Isabel Soriano Torres",
+    "posicion": "Auxiliar Contable",
+    "departamento": "Administración",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2023-10-25",
+    "anios": 2,
+    "gozados": 17,
+    "pendientes": 15.0,
+    "totales": 22,
+    "prop": 9.96
+  },
+  {
+    "codigo": "1290",
+    "nombre": "Wilson Leonel Argueta Ventura",
+    "posicion": "Operario Pista",
+    "departamento": "Pista",
+    "empresa": "PORTOSUR",
+    "fi": "2023-10-30",
+    "anios": 2,
+    "gozados": 0,
+    "pendientes": 31.8,
+    "totales": 22,
+    "prop": 9.75
+  },
+  {
+    "codigo": "1291",
+    "nombre": "Reyna Jacqueline Banegas Fuentes",
+    "posicion": "Operario Pista",
+    "departamento": "Pista",
+    "empresa": "PORTOSUR",
+    "fi": "2023-10-30",
+    "anios": 2,
+    "gozados": 12,
+    "pendientes": 19.8,
+    "totales": 22,
+    "prop": 9.75
+  },
+  {
+    "codigo": "1295",
+    "nombre": "Cinthia Pamela Dominguez Estrada",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2023-11-19",
+    "anios": 2,
+    "gozados": 0,
+    "pendientes": 30.9,
+    "totales": 22,
+    "prop": 8.92
+  },
+  {
+    "codigo": "1276",
+    "nombre": "Meldys Zuluma Espinal Blanco",
+    "posicion": "Lider Barista",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2023-11-26",
+    "anios": 2,
+    "gozados": 0,
+    "pendientes": 30.7,
+    "totales": 22,
+    "prop": 8.67
+  },
+  {
+    "codigo": "1304",
+    "nombre": "Cristina Sarahi Hernandez Torres",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2023-12-22",
+    "anios": 2,
+    "gozados": 12,
+    "pendientes": 17.5,
+    "totales": 22,
+    "prop": 7.54
+  },
+  {
+    "codigo": "1325",
+    "nombre": "Yusmary Maritza Rodriguez Espinal",
+    "posicion": "Operario de pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE S. DE R.L",
+    "fi": "2023-12-28",
+    "anios": 2,
+    "gozados": 17,
+    "pendientes": 12.3,
+    "totales": 22,
+    "prop": 7.33
+  },
+  {
+    "codigo": "1326",
+    "nombre": "Claudia Pamela Espinal Corrales",
+    "posicion": "Analista Contable",
+    "departamento": "Administración",
+    "empresa": "PORTOSUR",
+    "fi": "2024-01-02",
+    "anios": 2,
+    "gozados": 20,
+    "pendientes": 9.1,
+    "totales": 22,
+    "prop": 7.12
+  },
+  {
+    "codigo": "1320",
+    "nombre": "Delmer Fabricio Baca Garcia",
+    "posicion": "Labores Varias",
+    "departamento": "Administración",
+    "empresa": "ESTACION EL PUENTE S. DE R.L",
+    "fi": "2024-01-14",
+    "anios": 2,
+    "gozados": 22,
+    "pendientes": 6.6,
+    "totales": 22,
+    "prop": 6.62
+  },
+  {
+    "codigo": "1321",
+    "nombre": "Yanely Paola Godinez Molina",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-02-08",
+    "anios": 2,
+    "gozados": 0,
+    "pendientes": 27.6,
+    "totales": 22,
+    "prop": 5.62
+  },
+  {
+    "codigo": "1343",
+    "nombre": "keylin Michelle Canales Ochoa",
+    "posicion": "Operario de pista",
+    "departamento": "Pista",
+    "empresa": "PORTOSUR",
+    "fi": "2024-02-16",
+    "anios": 2,
+    "gozados": 12,
+    "pendientes": 15.3,
+    "totales": 22,
+    "prop": 5.29
+  },
+  {
+    "codigo": "1353",
+    "nombre": "Marcela Regina Quezada Escobar",
+    "posicion": "Jefe de Recursos Humanos",
+    "departamento": "Administración",
+    "empresa": "ESTACION EL PUENTE S. DE R.L",
+    "fi": "2024-04-01",
+    "anios": 2,
+    "gozados": 14,
+    "pendientes": 11.4,
+    "totales": 22,
+    "prop": 3.42
+  },
+  {
+    "codigo": "1335",
+    "nombre": "Gladys Elena Medina Aguilera",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-04-02",
+    "anios": 2,
+    "gozados": 12,
+    "pendientes": 13.4,
+    "totales": 22,
+    "prop": 3.38
+  },
+  {
+    "codigo": "1344",
+    "nombre": "Marco Antonio Hernandez Corrales",
+    "posicion": "Conserje",
+    "departamento": "Administración",
+    "empresa": "FRESSCO",
+    "fi": "2024-04-13",
+    "anios": 2,
+    "gozados": 15,
+    "pendientes": 9.9,
+    "totales": 22,
+    "prop": 2.92
+  },
+  {
+    "codigo": "1342",
+    "nombre": "Liliana Marcela Ramirez Andino",
+    "posicion": "Lider Barista",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-04-21",
+    "anios": 2,
+    "gozados": 12,
+    "pendientes": 12.6,
+    "totales": 22,
+    "prop": 2.58
+  },
+  {
+    "codigo": "1346",
+    "nombre": "Katia Iveth Oseguera Montoya",
+    "posicion": "Operario de pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2024-04-28",
+    "anios": 2,
+    "gozados": 12,
+    "pendientes": 12.3,
+    "totales": 22,
+    "prop": 2.33
+  },
+  {
+    "codigo": "1359",
+    "nombre": "Jimmy Alejandro Sanchez Mercado",
+    "posicion": "Operario de pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2024-05-02",
+    "anios": 2,
+    "gozados": 12,
+    "pendientes": 12.1,
+    "totales": 22,
+    "prop": 2.12
+  },
+  {
+    "codigo": "1361",
+    "nombre": "Irayma Katinia Ortega Flores",
+    "posicion": "Oficial de Credito y cobranzas",
+    "departamento": "Administración",
+    "empresa": "ESTACION EL PUENTE S. DE R.L",
+    "fi": "2024-05-17",
+    "anios": 2,
+    "gozados": 9,
+    "pendientes": 14.5,
+    "totales": 22,
+    "prop": 1.5
+  },
+  {
+    "codigo": "1351",
+    "nombre": "Ritzy Noely Pineda Espino",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-05-22",
+    "anios": 2,
+    "gozados": 0,
+    "pendientes": 23.3,
+    "totales": 22,
+    "prop": 1.29
+  },
+  {
+    "codigo": "1366",
+    "nombre": "Victoria Emiliany Quiroz Gonzales",
+    "posicion": "Supervisor de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/VIZCAYA",
+    "fi": "2024-05-24",
+    "anios": 2,
+    "gozados": 22,
+    "pendientes": 1.2,
+    "totales": 22,
+    "prop": 1.25
+  },
+  {
+    "codigo": "1362",
+    "nombre": "Cesar Luis Paz Gutierrez",
+    "posicion": "Operario de pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE S. DE R.L",
+    "fi": "2024-05-28",
+    "anios": 2,
+    "gozados": 12,
+    "pendientes": 11.1,
+    "totales": 22,
+    "prop": 1.08
+  },
+  {
+    "codigo": "1365",
+    "nombre": "Franklin Alexi Calero Coello",
+    "posicion": "Operario de pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2024-05-28",
+    "anios": 2,
+    "gozados": 0,
+    "pendientes": 23.1,
+    "totales": 22,
+    "prop": 1.08
+  },
+  {
+    "codigo": "1367",
+    "nombre": "Emilio Arturo Baires Aguiluz",
+    "posicion": "Jefe de Admon. Immobiliaria",
+    "departamento": "Administración",
+    "empresa": "ESTACION EL PUENTE S. DE R.L",
+    "fi": "2024-06-01",
+    "anios": 2,
+    "gozados": 21,
+    "pendientes": 1.9,
+    "totales": 22,
+    "prop": 0.92
+  },
+  {
+    "codigo": "1371",
+    "nombre": "Sabi Daniela Alvarez Giron",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-06-15",
+    "anios": 2,
+    "gozados": 12,
+    "pendientes": 10.3,
+    "totales": 22,
+    "prop": 0.33
+  },
+  {
+    "codigo": "1370",
+    "nombre": "Anderson Yair Mendez Moreno",
+    "posicion": "Operario de tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-06-19",
+    "anios": 2,
+    "gozados": 22,
+    "pendientes": 0.2,
+    "totales": 22,
+    "prop": 0.17
+  },
+  {
+    "codigo": "1373",
+    "nombre": "Luis Fernando Moreno Hernandez",
+    "posicion": "Operario de pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/VIZCAYA",
+    "fi": "2024-07-03",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 21.7,
+    "totales": 10,
+    "prop": 11.67
+  },
+  {
+    "codigo": "1375",
+    "nombre": "Francisco Antonio Perez Sanchez",
+    "posicion": "Operario de pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/VIZCAYA",
+    "fi": "2024-07-03",
+    "anios": 1,
+    "gozados": 5,
+    "pendientes": 16.7,
+    "totales": 10,
+    "prop": 11.67
+  },
+  {
+    "codigo": "1378",
+    "nombre": "Maynor Alexander Lanza Cardenas",
+    "posicion": "Supervisor",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-07-09",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 11.5,
+    "totales": 10,
+    "prop": 11.47
+  },
+  {
+    "codigo": "1383",
+    "nombre": "Aurora Elizabeth Lainez Rivera",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2024-07-26",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 20.9,
+    "totales": 10,
+    "prop": 10.93
+  },
+  {
+    "codigo": "1384",
+    "nombre": "Daniel Alejandro Torres Matamoros",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2024-08-02",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 20.7,
+    "totales": 10,
+    "prop": 10.7
+  },
+  {
+    "codigo": "1386",
+    "nombre": "Olbin Leonel Estrada Gonzales",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/VIZCAYA",
+    "fi": "2024-08-05",
+    "anios": 1,
+    "gozados": 4,
+    "pendientes": 16.6,
+    "totales": 10,
+    "prop": 10.6
+  },
+  {
+    "codigo": "1389",
+    "nombre": "Eduardo Antonio Oviedo Gallo",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/VIZCAYA",
+    "fi": "2024-08-05",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 10.6,
+    "totales": 10,
+    "prop": 10.6
+  },
+  {
+    "codigo": "1390",
+    "nombre": "Yolani Marisol Munguia Mendez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/VIZCAYA",
+    "fi": "2024-08-05",
+    "anios": 1,
+    "gozados": 4,
+    "pendientes": 16.6,
+    "totales": 10,
+    "prop": 10.6
+  },
+  {
+    "codigo": "1391",
+    "nombre": "Jose Cupertino Hernandez Velasquez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "PORTOSUR",
+    "fi": "2024-08-08",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 20.5,
+    "totales": 10,
+    "prop": 10.5
+  },
+  {
+    "codigo": "1394",
+    "nombre": "Merlo Zabdi Amador Colindres",
+    "posicion": "Motorista",
+    "departamento": "TRANCOSUR",
+    "empresa": "TRANCOSUR",
+    "fi": "2024-08-01",
+    "anios": 1,
+    "gozados": 9,
+    "pendientes": 11.7,
+    "totales": 10,
+    "prop": 10.73
+  },
+  {
+    "codigo": "1397",
+    "nombre": "Luis Armando Rodriguez Centeno",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/VIZCAYA",
+    "fi": "2024-08-20",
+    "anios": 1,
+    "gozados": 4,
+    "pendientes": 16.1,
+    "totales": 10,
+    "prop": 10.1
+  },
+  {
+    "codigo": "1399",
+    "nombre": "Leyla Suyapa Navarro",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-08-27",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 19.9,
+    "totales": 10,
+    "prop": 9.9
+  },
+  {
+    "codigo": "1406",
+    "nombre": "Isis Alezandra Maradiaga Garcia",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-10-23",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 18.0,
+    "totales": 10,
+    "prop": 8.0
+  },
+  {
+    "codigo": "1407",
+    "nombre": "Yesmy Yaxeli Betanco Aguirre",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-10-23",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 8.0,
+    "totales": 10,
+    "prop": 8.0
+  },
+  {
+    "codigo": "1408",
+    "nombre": "Mirna Nayeli Portillo Osorto",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-10-23",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 18.0,
+    "totales": 10,
+    "prop": 8.0
+  },
+  {
+    "codigo": "1409",
+    "nombre": "Denisse Cristal Baquedano Rodriguez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "PORTOSUR",
+    "fi": "2024-10-23",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 18.0,
+    "totales": 10,
+    "prop": 8.0
+  },
+  {
+    "codigo": "1410",
+    "nombre": "Dany Benjamin Ventura Zelaya",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-10-25",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 8.0,
+    "totales": 10,
+    "prop": 7.97
+  },
+  {
+    "codigo": "1411",
+    "nombre": "Angel Isaac Escaño Ramirez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Estacion Miramonte",
+    "fi": "2024-11-02",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 7.7,
+    "totales": 10,
+    "prop": 7.7
+  },
+  {
+    "codigo": "1412",
+    "nombre": "Edgar Danilo Espinal Pulido",
+    "posicion": "Operario de Tienda",
+    "departamento": "Ventas",
+    "empresa": "FRESSCO",
+    "fi": "2024-11-07",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 17.5,
+    "totales": 10,
+    "prop": 7.53
+  },
+  {
+    "codigo": "1416",
+    "nombre": "Hermis Dagoberto Avila Briceño",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-11-07",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 17.5,
+    "totales": 10,
+    "prop": 7.53
+  },
+  {
+    "codigo": "1418",
+    "nombre": "Dina Missel Alvarado Perez",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-11-07",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 17.5,
+    "totales": 10,
+    "prop": 7.53
+  },
+  {
+    "codigo": "1419",
+    "nombre": "Karen Sarai Moritoy Rodriguez",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-11-07",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 7.5,
+    "totales": 10,
+    "prop": 7.53
+  },
+  {
+    "codigo": "1421",
+    "nombre": "Cristhiam Samuel Manzanares Melgares",
+    "posicion": "Operario de Tienda",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE",
+    "fi": "2024-11-27",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 16.9,
+    "totales": 10,
+    "prop": 6.9
+  },
+  {
+    "codigo": "1425",
+    "nombre": "Osmedy Aguilar Fonseca",
+    "posicion": "Operario de Cabezal",
+    "departamento": "TRANCOSUR",
+    "empresa": "TRANCOSUR",
+    "fi": "2024-12-01",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 16.7,
+    "totales": 10,
+    "prop": 6.73
+  },
+  {
+    "codigo": "1426",
+    "nombre": "Indira Alejandra Veliz Cruz",
+    "posicion": "Especialista de compras",
+    "departamento": "Administración",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2024-12-16",
+    "anios": 1,
+    "gozados": 8,
+    "pendientes": 8.2,
+    "totales": 10,
+    "prop": 6.23
+  },
+  {
+    "codigo": "1427",
+    "nombre": "Maria Fernanda Duarte Espinal",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2024-12-16",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 6.2,
+    "totales": 10,
+    "prop": 6.23
+  },
+  {
+    "codigo": "1428",
+    "nombre": "Katerin Lorena Santander Escalante",
+    "posicion": "Operario de Tienda",
+    "departamento": "Ventas",
+    "empresa": "FRESSCO",
+    "fi": "2024-12-23",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 16.0,
+    "totales": 10,
+    "prop": 6.0
+  },
+  {
+    "codigo": "1429",
+    "nombre": "Jose Wilmer Bonilla Rios",
+    "posicion": "Operario de Pista",
+    "departamento": "pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2024-12-17",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 6.2,
+    "totales": 10,
+    "prop": 6.2
+  },
+  {
+    "codigo": "1433",
+    "nombre": "Michel Alejandra Almendarez Morales",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2025-01-10",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 5.4,
+    "totales": 10,
+    "prop": 5.43
+  },
+  {
+    "codigo": "1434",
+    "nombre": "Carlos Daniel Molina Fonseca",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2025-01-15",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 5.3,
+    "totales": 10,
+    "prop": 5.27
+  },
+  {
+    "codigo": "1436",
+    "nombre": "Osgler Ismael Perez Perez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/VIZCAYA",
+    "fi": "2025-02-06",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 4.6,
+    "totales": 10,
+    "prop": 4.57
+  },
+  {
+    "codigo": "1438",
+    "nombre": "Gladys Andrea Sevilla Corrales",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2025-02-14",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 14.3,
+    "totales": 10,
+    "prop": 4.3
+  },
+  {
+    "codigo": "1439",
+    "nombre": "Jennifer Nicoll Varela Ferrufino",
+    "posicion": "Operario de Tienda",
+    "departamento": "TIENDA",
+    "empresa": "FRESSCO",
+    "fi": "2025-02-14",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 14.3,
+    "totales": 10,
+    "prop": 4.3
+  },
+  {
+    "codigo": "1440",
+    "nombre": "Keylin Jicela Zuniga Mendez",
+    "posicion": "Operario de Pista",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2025-02-14",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 14.3,
+    "totales": 10,
+    "prop": 4.3
+  },
+  {
+    "codigo": "1441",
+    "nombre": "Jazmin Elizabeth Castillo Herrera",
+    "posicion": "Operario de Tienda",
+    "departamento": "TIENDA",
+    "empresa": "FRESSCO",
+    "fi": "2025-02-07",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 14.5,
+    "totales": 10,
+    "prop": 4.53
+  },
+  {
+    "codigo": "1442",
+    "nombre": "Dencel Agustin Perez Guerra",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2025-02-14",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 4.3,
+    "totales": 10,
+    "prop": 4.3
+  },
+  {
+    "codigo": "1443",
+    "nombre": "Jose Manuel Alvarez Maradiaga",
+    "posicion": "Supervisor de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2025-03-05",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 13.6,
+    "totales": 10,
+    "prop": 3.6
+  },
+  {
+    "codigo": "1444",
+    "nombre": "Nixon Manuel Mendez Galo",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2025-03-05",
+    "anios": 1,
+    "gozados": 8,
+    "pendientes": 5.6,
+    "totales": 10,
+    "prop": 3.6
+  },
+  {
+    "codigo": "1445",
+    "nombre": "Darwin Isaac Hernandez Flores",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2025-03-05",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 3.6,
+    "totales": 10,
+    "prop": 3.6
+  },
+  {
+    "codigo": "1446",
+    "nombre": "Edgar Omar Pineda Cruz",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2025-03-05",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 3.6,
+    "totales": 10,
+    "prop": 3.6
+  },
+  {
+    "codigo": "1447",
+    "nombre": "Anyela Cecilia Quevedo Garcia",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2025-03-28",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 12.9,
+    "totales": 10,
+    "prop": 2.87
+  },
+  {
+    "codigo": "1449",
+    "nombre": "Milagro de Jesus Cruz Baquedano",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2025-04-03",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 2.7,
+    "totales": 10,
+    "prop": 2.67
+  },
+  {
+    "codigo": "1450",
+    "nombre": "Lesbia Merari Aguilera Montalvan",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "FRESSCO",
+    "fi": "2025-04-03",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 2.7,
+    "totales": 10,
+    "prop": 2.67
+  },
+  {
+    "codigo": "1452",
+    "nombre": "Adan Joel Euceda Nuñez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION EL PUENTE/NACAOME",
+    "fi": "2025-04-01",
+    "anios": 1,
+    "gozados": 0,
+    "pendientes": 12.7,
+    "totales": 10,
+    "prop": 2.73
+  },
+  {
+    "codigo": "1454",
+    "nombre": "Yorlenis Rosibel Gomez Avila",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "ESTACION MIRAMONTE",
+    "fi": "2025-04-23",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 2.0,
+    "totales": 10,
+    "prop": 2.0
+  },
+  {
+    "codigo": "1456",
+    "nombre": "Dorian Omar Romero Romero",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Portosur",
+    "fi": "2025-05-14",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 1.3,
+    "totales": 10,
+    "prop": 1.3
+  },
+  {
+    "codigo": "1457",
+    "nombre": "Gabriela Aracely Benavides Sauceda",
+    "posicion": "Analista de Talento Humano",
+    "departamento": "Administrativa",
+    "empresa": "Puente",
+    "fi": "2025-05-15",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 1.3,
+    "totales": 10,
+    "prop": 1.27
+  },
+  {
+    "codigo": "1460",
+    "nombre": "Andres Sebastian Chirino Vigil",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Nacaome",
+    "fi": "2025-06-04",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 0.6,
+    "totales": 10,
+    "prop": 0.63
+  },
+  {
+    "codigo": "1461",
+    "nombre": "Vasni Eli Lopez Perez",
+    "posicion": "Operador de Cabezal",
+    "departamento": "Operaciones",
+    "empresa": "Trancosur",
+    "fi": "2025-06-01",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 0.7,
+    "totales": 10,
+    "prop": 0.73
+  },
+  {
+    "codigo": "1462",
+    "nombre": "Joel Javier Ortiz Vasquez",
+    "posicion": "Operador de Cabezal",
+    "departamento": "Operaciones",
+    "empresa": "Trancosur",
+    "fi": "2025-05-24",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 1.0,
+    "totales": 10,
+    "prop": 1.0
+  },
+  {
+    "codigo": "1465",
+    "nombre": "Angel David Silva Ordoñez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Nacaome",
+    "fi": "2025-06-10",
+    "anios": 1,
+    "gozados": 10,
+    "pendientes": 0.4,
+    "totales": 10,
+    "prop": 0.43
+  },
+  {
+    "codigo": "1466",
+    "nombre": "Danilo Eduardo Sierra Garcia",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Vizcaya",
+    "fi": "2025-07-01",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 9.8,
+    "totales": 0,
+    "prop": 9.78
+  },
+  {
+    "codigo": "1468",
+    "nombre": "Oswaldo Enrique Bonilla Diaz",
+    "posicion": "Jefe de operación-tiendas",
+    "departamento": "Administrativa",
+    "empresa": "Puente",
+    "fi": "2025-07-01",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 9.8,
+    "totales": 0,
+    "prop": 9.78
+  },
+  {
+    "codigo": "1471",
+    "nombre": "Zaira Judith Avila Valle",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Portosur",
+    "fi": "2025-07-01",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 9.8,
+    "totales": 0,
+    "prop": 9.78
+  },
+  {
+    "codigo": "1473",
+    "nombre": "Chris Stanly Mondragon Carcamo",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Vizcaya",
+    "fi": "2025-07-08",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 9.6,
+    "totales": 0,
+    "prop": 9.58
+  },
+  {
+    "codigo": "1476",
+    "nombre": "Eldeen Ivan Funes Funez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Nacaome",
+    "fi": "2025-07-08",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 9.6,
+    "totales": 0,
+    "prop": 9.58
+  },
+  {
+    "codigo": "1477",
+    "nombre": "Marcos Joel Osorio Avila",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Puente",
+    "fi": "2025-07-18",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 9.3,
+    "totales": 0,
+    "prop": 9.31
+  },
+  {
+    "codigo": "1478",
+    "nombre": "Hanssy Yamilett Ramos Barahona",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Miramonte",
+    "fi": "2025-07-18",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 9.3,
+    "totales": 0,
+    "prop": 9.31
+  },
+  {
+    "codigo": "1480",
+    "nombre": "Sirli Marisol Nuñez Escoto",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Puente",
+    "fi": "2025-08-05",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 8.8,
+    "totales": 0,
+    "prop": 8.83
+  },
+  {
+    "codigo": "1483",
+    "nombre": "Rigoberto Aguilera Casco",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Miramonte",
+    "fi": "2025-08-05",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 8.8,
+    "totales": 0,
+    "prop": 8.83
+  },
+  {
+    "codigo": "1485",
+    "nombre": "Selvin Josue Funez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Portosur",
+    "fi": "2025-08-12",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 8.6,
+    "totales": 0,
+    "prop": 8.64
+  },
+  {
+    "codigo": "1486",
+    "nombre": "Elquin Aldair Perez Hernandez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Puente",
+    "fi": "2025-08-23",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 8.3,
+    "totales": 0,
+    "prop": 8.33
+  },
+  {
+    "codigo": "1487",
+    "nombre": "Cesia Nataly Lopez Rivera",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Miramonte",
+    "fi": "2025-08-23",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 8.3,
+    "totales": 0,
+    "prop": 8.33
+  },
+  {
+    "codigo": "1488",
+    "nombre": "Erick Josue Sanchez Gomez",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Miramonte",
+    "fi": "2025-08-23",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 8.3,
+    "totales": 0,
+    "prop": 8.33
+  },
+  {
+    "codigo": "1490",
+    "nombre": "Alan Rafael Mejia Rodriguez",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Miramonte",
+    "fi": "2025-08-23",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 8.3,
+    "totales": 0,
+    "prop": 8.33
+  },
+  {
+    "codigo": "1492",
+    "nombre": "Ronald Ivan Flores Baquedano",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Puente",
+    "fi": "2025-08-28",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 8.2,
+    "totales": 0,
+    "prop": 8.22
+  },
+  {
+    "codigo": "1495",
+    "nombre": "Britany Ross Pastrana Beltrand",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Miramonte",
+    "fi": "2025-09-02",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 8.1,
+    "totales": 0,
+    "prop": 8.08
+  },
+  {
+    "codigo": "1497",
+    "nombre": "Keren Nicol Aguilera Velasquez",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Puente",
+    "fi": "2025-09-11",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 7.8,
+    "totales": 0,
+    "prop": 7.83
+  },
+  {
+    "codigo": "1498",
+    "nombre": "Styben Dalessandro Narvaez Bonilla",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Miramonte",
+    "fi": "2025-10-06",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 7.1,
+    "totales": 0,
+    "prop": 7.14
+  },
+  {
+    "codigo": "1499",
+    "nombre": "Melkis Sedeth Flores Pastor",
+    "posicion": "Operario de Pista",
+    "departamento": "Pista",
+    "empresa": "Portosur",
+    "fi": "2025-10-06",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 7.1,
+    "totales": 0,
+    "prop": 7.14
+  },
+  {
+    "codigo": "1500",
+    "nombre": "Douglas Edgardo Zeledón Portillo",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Puente",
+    "fi": "2025-10-06",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 7.1,
+    "totales": 0,
+    "prop": 7.14
+  },
+  {
+    "codigo": "1501",
+    "nombre": "Jarvin Missael Amador Reina",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Portosur",
+    "fi": "2025-10-06",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 7.1,
+    "totales": 0,
+    "prop": 7.14
+  },
+  {
+    "codigo": "1502",
+    "nombre": "Julissa Sugey Salmeron Manzanarez",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Nacaome",
+    "fi": "2025-10-30",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 6.5,
+    "totales": 0,
+    "prop": 6.5
+  },
+  {
+    "codigo": "1504",
+    "nombre": "Maria Agustina Aguilera Aguilera",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Miramonte",
+    "fi": "2025-10-30",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 6.5,
+    "totales": 0,
+    "prop": 6.5
+  },
+  {
+    "codigo": "1505",
+    "nombre": "Yesmy Adali Osorto Aguilar",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Portosur",
+    "fi": "2025-10-30",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 6.5,
+    "totales": 0,
+    "prop": 6.5
+  },
+  {
+    "codigo": "1506",
+    "nombre": "Ana Maria Sierra Vargas",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Miramonte",
+    "fi": "2025-10-30",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 6.5,
+    "totales": 0,
+    "prop": 6.5
+  },
+  {
+    "codigo": "1479",
+    "nombre": "Sandra Johanna Perez Castillo",
+    "posicion": "Supervisor de Tienda FRESSCO",
+    "departamento": "Tienda",
+    "empresa": "Miramonte",
+    "fi": "2025-11-10",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 6.2,
+    "totales": 0,
+    "prop": 6.19
+  },
+  {
+    "codigo": "1507",
+    "nombre": "Yajaira Maribel Silva Garcia",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Nacaome",
+    "fi": "2025-11-26",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 5.8,
+    "totales": 0,
+    "prop": 5.78
+  },
+  {
+    "codigo": "1508",
+    "nombre": "Cecilia Deciree Davila Linares",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Miramonte",
+    "fi": "2025-11-26",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 5.8,
+    "totales": 0,
+    "prop": 5.78
+  },
+  {
+    "codigo": "1509",
+    "nombre": "Nicolle Maria Moura Vallejo",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Miramonte",
+    "fi": "2025-11-26",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 5.8,
+    "totales": 0,
+    "prop": 5.78
+  },
+  {
+    "codigo": "1510",
+    "nombre": "Iveth Jackeline Herrera",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Vizcaya",
+    "fi": "2025-11-26",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 5.8,
+    "totales": 0,
+    "prop": 5.78
+  },
+  {
+    "codigo": "1511",
+    "nombre": "Nahomy Suzet Cabrera Escalante",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Puente",
+    "fi": "2025-11-26",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 5.8,
+    "totales": 0,
+    "prop": 5.78
+  },
+  {
+    "codigo": "1512",
+    "nombre": "Bayron Enrique Ramos Ordoñez",
+    "posicion": "Operario de Tienda",
+    "departamento": "Tienda",
+    "empresa": "Vizcaya",
+    "fi": "2025-11-26",
+    "anios": 0,
+    "gozados": 0,
+    "pendientes": 5.8,
+    "totales": 0,
+    "prop": 5.78
+  }
 ];
-const RRHH_EMAIL = 'm.quezada@grupogrec.hn';
-const RRHH_WHATSAPP = '50489287216';
+const TH_EMAIL = 'm.quezada@grupogrec.hn';
+const TH_WHATSAPP = '50489287216';
 const GG_EMAIL = 'r.rivas@grupogrec.hn';
 
 // ─────────────────────────────────────────────────────────────
@@ -252,27 +2024,19 @@ const GG_EMAIL = 'r.rivas@grupogrec.hn';
 //  Variables disponibles: {NOMBRE} {FOLIO} {INICIO} {FIN} {DIAS}
 // ─────────────────────────────────────────────────────────────
 const MSG_APROBADO =
-  '*Vacaciones APROBADAS*\n' +
-  '_Grupo Grec_\n' +
-  '────────────────────\n\n' +
-  '*Colaborador:* {NOMBRE}\n' +
-  '*Folio:* {FOLIO}\n\n' +
-  '*Fecha inicio:* {INICIO}\n' +
-  '*Fecha fin:* {FIN}\n' +
-  '*Días solicitados:* {DIAS}\n\n' +
-  '────────────────────\n' +
-  '🌴 ¡Que las disfrutes!';
+  '✅ *Vacaciones APROBADAS — Grupo Grec*\n\n' +
+  'Hola {NOMBRE}, tu solicitud de vacaciones fue *aprobada* ✅\n\n' +
+  '📋 Folio: {FOLIO}\n' +
+  '📅 Inicio: {INICIO}\n' +
+  '📅 Fin: {FIN}\n' +
+  '📆 Días: {DIAS}\n\n' +
+  '¡Que las disfrutes! 🌴';
 
 const MSG_RECHAZADO =
-  '*Solicitud Rechazada*\n' +
-  '_Grupo Grec_\n' +
-  '────────────────────\n\n' +
-  '*Colaborador:* {NOMBRE}\n' +
-  '*Folio:* {FOLIO}\n\n' +
-  '*Fecha inicio:* {INICIO}\n' +
-  '*Fecha fin:* {FIN}\n' +
-  '*Días solicitados:* {DIAS}\n\n' +
-  '────────────────────\n' +
+  '❌ *Solicitud de Vacaciones — Grupo Grec*\n\n' +
+  'Hola {NOMBRE}, lamentablemente tu solicitud fue *rechazada* ❌\n\n' +
+  '📋 Folio: {FOLIO}\n' +
+  '📅 Fechas: {INICIO} al {FIN}\n\n' +
   'Comunícate con Talento Humano para más información.';
 
 // Posiciones que requieren aprobación de Gerencia General
@@ -378,8 +2142,7 @@ async function iniciar(){
 
 async function responder(val){
   clearQuick();
-  const raw = val !== undefined ? val : document.getElementById('txt').value;
-  const txt = raw.trim();
+  const txt = val.trim();
   if(!txt) return;
   document.getElementById('txt').value='';
   usrMsg(txt);
@@ -417,17 +2180,11 @@ async function responder(val){
     await botMsg(
       '¡Perfecto! 🎉 Tienes <strong style="color:#075E54">'+disp+' días disponibles</strong>.<br>' +
       '<small style="color:#666">'+e.anios+' años de antigüedad</small>', 700);
-    // Si el empleado ya tiene teléfono en la base de datos, saltar step 25
-    if(e.telefono){
-      sol.telefono = e.telefono.startsWith('504') ? e.telefono : '504'+e.telefono;
-      await botMsg('¿Cuál es la <strong>fecha de inicio</strong> de tus vacaciones?<br><small style="color:#888">Formato: DD/MM/AAAA · Ejemplo: 15/07/2026</small>', 600);
-      step=3; enableInput(); return;
-    }
     await botMsg('Para enviarte la respuesta, ¿cuál es tu <strong>número de WhatsApp</strong>?<br><small style="color:#888">Solo el número sin código de país · Ejemplo: 98765432</small>', 600);
     step=25; enableInput(); return;
   }
 
-  // STEP 2.5: teléfono del empleado (solo si no está en la base de datos)
+  // STEP 2.5: teléfono del empleado
   if(step===25){
     const tel = txt.replace(/\D/g,'');
     if(tel.length < 8){
@@ -488,32 +2245,32 @@ async function responder(val){
       <div class="row"><span class="label">Fecha inicio</span><span class="value">${formatDate(sol.fechaInicio)}</span></div>
       <div class="row"><span class="label">Fecha fin</span><span class="value">${formatDate(sol.fechaFin)}</span></div>
       <div class="row"><span class="label">Días solicitados</span><span class="value"><span class="dias-badge">${n} días</span></span></div>
-      <div class="row"><span class="label">Días disponibles</span><span class="value">${e.pendientes} días</span></div>
+      <div class="row"><span class="label">Días disponibles</span><span class="value">${e.pendientes}</span></div>
     </div>`;
-    await botMsg(card, 400);
-    await botMsg('¿Confirmas tu solicitud?', 600);
-    showQuick([{label:'✅ Sí, confirmar'},{label:'❌ No, cancelar'}]);
+
+    await botMsg(card + '<div class="time">'+now()+'</div>', 700);
+    await botMsg('¿Confirmas el envío de esta solicitud?', 400);
+    showQuick([{label:'✅ Confirmar y enviar'},{label:'✏️ Corregir fechas'},{label:'❌ Cancelar'}]);
     step=5; enableInput(); return;
   }
 
-  // STEP 5: confirmación final
+  // STEP 5: confirmar
   if(step===5){
-    const r = txt.toLowerCase();
-    if(r.includes('no') || r.includes('cancel')){
-      await botMsg('Solicitud cancelada. Escribe tu código de empleado para intentarlo de nuevo.', 500);
-      step=1; enableInput(); return;
+    if(txt.includes('Cancelar')||txt.includes('cancelar')){
+      await botMsg('Solicitud cancelada. Puedes comenzar de nuevo cuando quieras. 👋', 400);
+      step=0; return;
     }
-    if(!r.includes('s') && !r.includes('confirm')){
-      await botMsg('Por favor responde <strong>Sí</strong> o <strong>No</strong>.', 400);
-      showQuick([{label:'✅ Sí, confirmar'},{label:'❌ No, cancelar'}]);
-      enableInput(); return;
+    if(txt.includes('Corregir')||txt.includes('corregir')){
+      await botMsg('Claro. ¿Cuál es la <strong>nueva fecha de inicio</strong>?<br><small>Formato: DD/MM/AAAA</small>', 400);
+      step=3; enableInput(); return;
     }
-
+    // Confirmar → enviar email + generar mensaje WhatsApp + folio
     const folio = 'SOL-'+Date.now().toString().slice(-6);
     sol.folio = folio;
     const e = sol.empleado;
 
-    const nombre1 = e.nombre;
+    // Construir links WhatsApp de aprobación/rechazo directo desde el correo
+    const nombre1 = e.nombre.split(' ')[0];
     function fillMsg(tpl){
       return tpl
         .replace(/\{NOMBRE\}/g, nombre1)
@@ -528,57 +2285,26 @@ async function responder(val){
     const linkAprobar  = tel ? 'https://wa.me/' + tel + '?text=' + msgAprobar  : '#sin-telefono';
     const linkRechazar = tel ? 'https://wa.me/' + tel + '?text=' + msgRechazar : '#sin-telefono';
 
-    // WA links para que el jefe notifique a Talento Humano después de decidir
-    const msgThAprobado  = encodeURIComponent(
-      '*Vacaciones Aprobadas — Grupo Grec*\n' +
-      '────────────────────\n' +
-      '*Colaborador:* ' + e.nombre + '\n' +
-      '*Folio:* ' + folio + '\n' +
-      '*Fecha inicio:* ' + formatDate(sol.fechaInicio) + '\n' +
-      '*Fecha fin:* ' + formatDate(sol.fechaFin) + '\n' +
-      '*Días:* ' + sol.dias + '\n\n' +
-      '✅ He aprobado esta solicitud.'
-    );
-    const msgThRechazado = encodeURIComponent(
-      '*Solicitud Rechazada — Grupo Grec*\n' +
-      '────────────────────\n' +
-      '*Colaborador:* ' + e.nombre + '\n' +
-      '*Folio:* ' + folio + '\n' +
-      '*Fecha inicio:* ' + formatDate(sol.fechaInicio) + '\n' +
-      '*Fecha fin:* ' + formatDate(sol.fechaFin) + '\n' +
-      '*Días:* ' + sol.dias + '\n\n' +
-      '❌ He rechazado esta solicitud.'
-    );
-    const linkThAprobar  = 'https://wa.me/' + RRHH_WHATSAPP + '?text=' + msgThAprobado;
-    const linkThRechazar = 'https://wa.me/' + RRHH_WHATSAPP + '?text=' + msgThRechazado;
-
-    const esGG    = requiereGG(e.posicion);
-    const toEmail = (e.email_jefe && e.email_jefe.includes('@')) ? e.email_jefe : RRHH_EMAIL;
-    // TH ya NO va en CC — el jefe notifica a TH manualmente desde el correo
-    const ccList  = esGG ? GG_EMAIL : '';
-
+    // Enviar email via EmailJS
     await botMsg('Enviando tu solicitud... ⏳', 300);
     try {
       await emailjs.send('service_va4l7zl', 'template_tdc7g35', {
-        to_email:         toEmail,
+        to_email:      RRHH_EMAIL,
         folio,
-        nombre:           e.nombre,
-        codigo:           e.codigo,
-        empresa:          e.empresa,
-        departamento:     e.departamento,
-        fecha_inicio:     formatDate(sol.fechaInicio),
-        fecha_fin:        formatDate(sol.fechaFin),
-        dias:             sol.dias,
-        disponibles:      e.pendientes,
-        link_aprobar:     linkAprobar,
-        link_rechazar:    linkRechazar,
-        link_th_aprobar:  linkThAprobar,
-        link_th_rechazar: linkThRechazar,
-        cc_email:         ccList,
-        nivel:            esGG ? 'Jefe / Especialista' : 'Operativo / Supervisor',
-        jefe_nombre:      e.jefe_nombre || '(sin jefe registrado)',
-        email:            toEmail,
-        name:             e.nombre,
+        nombre:        e.nombre,
+        codigo:        e.codigo,
+        empresa:       e.empresa,
+        departamento:  e.departamento,
+        fecha_inicio:  formatDate(sol.fechaInicio),
+        fecha_fin:     formatDate(sol.fechaFin),
+        dias:          sol.dias,
+        disponibles:   e.pendientes,
+        link_aprobar:  linkAprobar,
+        link_rechazar: linkRechazar,
+        cc_email:      requiereGG(e.posicion) ? GG_EMAIL : '',
+        nivel:         requiereGG(e.posicion) ? 'Jefe / Especialista' : 'Operativo / Supervisor',
+        email:         RRHH_EMAIL,
+        name:          e.nombre,
       });
     } catch(err) {
       await botMsg('⚠️ No se pudo enviar el correo automáticamente. Usa el botón de WhatsApp para notificar a RRHH.', 400);
@@ -592,31 +2318,36 @@ async function responder(val){
       '🏢 Empresa: '+e.empresa+'\n' +
       '📅 Inicio: '+formatDate(sol.fechaInicio)+'\n' +
       '📅 Fin: '+formatDate(sol.fechaFin)+'\n' +
-      '📆 Días: '+sol.dias+'\n' +
-      '✅ Días disponibles: '+e.pendientes
+      '📆 Días solicitados: '+sol.dias+'\n' +
+      '✅ Días disponibles: '+e.pendientes+'\n\n' +
+      '⏳ Estado: PENDIENTE DE APROBACIÓN'
     );
 
-    const successCard = `
-      <div class="success-card">
-        <div class="icon">🎉</div>
-        <h3>¡Solicitud Enviada!</h3>
-        <p>Tu solicitud fue registrada con el folio <strong>${folio}</strong>.<br>
-           Recibirás una respuesta por WhatsApp pronto.</p>
-        <a class="wa-btn" href="https://wa.me/${RRHH_WHATSAPP}?text=${waMsg}" target="_blank">
-          📲 Contactar a RRHH
-        </a>
-      </div>`;
+    const successCard = `<div class="success-card">
+      <div class="icon">🎉</div>
+      <h3>¡Solicitud enviada!</h3>
+      <p>Folio: <strong>${folio}</strong><br>Se envió un correo a RRHH. También puedes confirmar por WhatsApp.</p>
+      <a class="wa-btn" href="https://wa.me/${RRHH_WHATSAPP}?text=${waMsg}" target="_blank">
+        📲 Confirmar por WhatsApp
+      </a>
+    </div>`;
+
     await botMsg(successCard, 600);
+    await botMsg('✅ Correo enviado a RRHH. Guarda el folio <strong>'+folio+'</strong> para seguimiento.', 500);
     step=6;
+    return;
   }
+
+  enableInput();
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
-(async()=>{
-  await botMsg('¡Hola! 👋 Bienvenido al sistema de <strong>Solicitud de Vacaciones</strong> de Grupo Grec.', 500);
-  await botMsg('Para comenzar, ingresa tu <strong>código de empleado</strong>:', 600);
-  step=1; enableInput();
-})();
+function enviar(){
+  const val = document.getElementById('txt').value.trim();
+  if(val) responder(val);
+}
+
+// ── START ─────────────────────────────────────────────────────────────────────
+window.onload = iniciar;
 </script>
 </body>
 </html>
