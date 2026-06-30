@@ -619,8 +619,58 @@ async function responder(val){
 // ── INIT ──────────────────────────────────────────────────────────────────────
 (async()=>{
   await botMsg('¡Hola! 👋 Bienvenido al sistema de solicitud de vacaciones de <strong>Grupo Grec</strong>.', 600);
-await botMsg('Soy el asistente de Talento Humano y te ayudaré con tu solicitud de vacaciones en pocos pasos. 😊', 800);
-await botMsg('Para empezar, por favor escribe tu <strong>código de empleado</strong>.<br><small style="color:#888">Ejemplo: 1009</small>', 600);
+  await botMsg('Soy el asistente de Talento Humano y te ayudaré con tu solicitud de vacaciones en pocos pasos. 😊', 800);
+  await botMsg('Para empezar, por favor escribe tu <strong>código de empleado</strong>.<br><small style="color:#888">Ejemplo: 1009</small>', 600);
+})();
+</script>
+</body>
+</html>
+        link_th_rechazar: linkThRechazar,
+        cc_email:         ccList,
+        nivel:            esGG ? 'Jefe / Especialista' : 'Operativo / Supervisor',
+        jefe_nombre:      e.jefe_nombre || '(sin jefe registrado)',
+        email:            toEmail,
+        name:             e.nombre,
+        telefono:         e.telefono || '',
+        posicion:         e.posicion || '',
+        saldo_restante:   (e.pendientes - sol.dias),
+      });
+    } catch(err) {
+      await botMsg('⚠️ No se pudo enviar el correo automáticamente. Usa el botón de WhatsApp para notificar a Talento Humano.', 400);
+    }
+
+    const waMsg = encodeURIComponent(
+      '📋 *SOLICITUD DE VACACIONES — GRUPO GREC*\n\n' +
+      '🆔 Folio: '+folio+'\n' +
+      '👤 Colaborador: '+e.nombre+'\n' +
+      '🔢 Código: '+e.codigo+'\n' +
+      '🏢 Empresa: '+e.empresa+'\n' +
+      '📅 Inicio: '+formatDate(sol.fechaInicio)+'\n' +
+      '📅 Fin: '+formatDate(sol.fechaFin)+'\n' +
+      '📆 Días: '+sol.dias+'\n' +
+      '✅ Días disponibles: '+e.pendientes
+    );
+
+    const successCard = `
+      <div class="success-card">
+        <div class="icon">🎉</div>
+        <h3>¡Solicitud Enviada!</h3>
+        <p>Tu solicitud fue registrada con el folio <strong>${folio}</strong>.<br>
+           Recibirás una respuesta por WhatsApp pronto.</p>
+        <a class="wa-btn" href="https://wa.me/${RRHH_WHATSAPP}?text=${waMsg}" target="_blank">
+          📲 Contactar a Talento Humano
+        </a>
+      </div>`;
+    await botMsg(successCard, 600);
+    step=6;
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+(async()=>{
+  await botMsg('¡Hola! 👋 Bienvenido al sistema de <strong>Solicitud de Vacaciones</strong> de Grupo Grec.', 500);
+  await botMsg('Para comenzar, ingresa tu <strong>código de empleado</strong>:', 600);
+  step=1; enableInput();
 })();
 </script>
 </body>
