@@ -305,7 +305,13 @@ function now(){ return new Date().toLocaleTimeString('es',{hour:'2-digit',minute
 
 function addDate(dateStr, dias){
   const d = new Date(dateStr + 'T12:00:00');
-  d.setDate(d.getDate() + parseInt(dias) - 1);
+  let contados = 1;
+  // El primer día cuenta si no es domingo
+  if(d.getDay() === 0) contados = 0;
+  while(contados < parseInt(dias)){
+    d.setDate(d.getDate() + 1);
+    if(d.getDay() !== 0) contados++; // No contar domingos
+  }
   return d.toISOString().split('T')[0];
 }
 
@@ -453,6 +459,11 @@ async function responder(val){
     const hoy = new Date().toISOString().split('T')[0];
     if(iso < hoy){
       await botMsg('⚠️ Esa fecha ya pasó. Ingresa una fecha <strong>futura</strong>.', 500);
+      enableInput(); return;
+    }
+    const diaSemana = new Date(iso + 'T12:00:00').getDay();
+    if(diaSemana === 0){
+      await botMsg('⚠️ El domingo no cuenta como día de vacaciones. Por favor elige otra fecha de inicio.', 500);
       enableInput(); return;
     }
     sol.fechaInicio = iso;
