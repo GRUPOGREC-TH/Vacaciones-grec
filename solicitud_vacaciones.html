@@ -534,6 +534,24 @@ async function responder(val){
     const linkAprobar  = tel ? 'https://wa.me/' + tel + '?text=' + msgAprobar  : '#sin-telefono';
     const linkRechazar = tel ? 'https://wa.me/' + tel + '?text=' + msgRechazar : '#sin-telefono';
 
+    // Link ficha para expediente
+    const fichaParams = new URLSearchParams({
+      folio:        folio,
+      nombre:       e.nombre,
+      codigo:       e.codigo,
+      empresa:      e.empresa,
+      departamento: e.departamento,
+      posicion:     e.posicion || '',
+      jefe:         e.jefe_nombre || '',
+      inicio:       sol.fechaInicio,
+      fin:          sol.fechaFin,
+      dias:         sol.dias,
+      saldo:        (e.pendientes - sol.dias),
+      fecha_sol:    new Date().toISOString().slice(0,10),
+      estado:       'APROBADO'
+    }).toString();
+    const linkFicha = 'https://grupogrec-th.github.io/Vacaciones-grec/ficha_vacaciones.html?' + fichaParams;
+
     // WA links para que el jefe notifique a Talento Humano después de decidir
     const msgThAprobado  = encodeURIComponent(
       '*Vacaciones Aprobadas — Grupo Grec*\n' +
@@ -543,7 +561,8 @@ async function responder(val){
       '*Fecha inicio:* ' + formatDate(sol.fechaInicio) + '\n' +
       '*Fecha fin:* ' + formatDate(sol.fechaFin) + '\n' +
       '*Días:* ' + sol.dias + '\n\n' +
-      '✅ He aprobado esta solicitud.'
+      '✅ He aprobado esta solicitud.\n\n' +
+      '📄 *Ficha para expediente:*\n' + linkFicha
     );
     const msgThRechazado = encodeURIComponent(
       '*Solicitud Rechazada — Grupo Grec*\n' +
@@ -588,6 +607,24 @@ async function responder(val){
         telefono:         e.telefono || '',
         posicion:         e.posicion || '',
         saldo_restante:   (e.pendientes - sol.dias),
+      });
+
+      // Ficha a Talento Humano
+      await emailjs.send('service_va4l7zl', 'template_2cy3jor', {
+        folio,
+        nombre:           e.nombre,
+        codigo:           e.codigo,
+        empresa:          e.empresa,
+        departamento:     e.departamento,
+        posicion:         e.posicion || '',
+        jefe_nombre:      e.jefe_nombre || '',
+        fecha_inicio:     formatDate(sol.fechaInicio),
+        fecha_fin:        formatDate(sol.fechaFin),
+        dias:             sol.dias,
+        saldo_restante:   (e.pendientes - sol.dias),
+        fecha_solicitud:  formatDate(new Date().toISOString().slice(0,10)),
+        name:             e.nombre,
+        email:            RRHH_EMAIL,
       });
     } catch(err) {
       await botMsg('⚠️ No se pudo enviar el correo automáticamente. Usa el botón de WhatsApp para notificar a Talento Humano.', 400);
